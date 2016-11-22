@@ -16,8 +16,8 @@ function validarIngreso($conn, $user,$pass) {
 		}
 		return $cadena;					
 	}else{
-		echo 'No hay nada';
-		return "";
+		//echo 'No hay nada';
+		return $cadena;
 	}
 }
 

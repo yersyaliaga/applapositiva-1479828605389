@@ -40,6 +40,20 @@ function getActividades($conn){
 	}
 }
 
+function insertEmergency($conn,$userId,$latitud,$longitud){
+	$query = "Insert into emergencias(idUsuario,fechaHora,latitud,longitud,estado) values(".$userId.",now(),".$latitud.",".$longitud.",'En Proceso')";
+	if (mysqli_query($conn, $query)) {
+			    //echo "New record created successfully";
+	} else {		
+		array_push($error, "Error: " . $sql . "<br>" . mysqli_error($conn) );
+	}	
+	if (count($error) > 0) {
+    	echo json_encode(array("success"=>0));
+    } else {
+    	echo json_encode(array("success"=>1));
+    }
+}
+
 
 switch ($method) {
   case 'POST':
@@ -51,6 +65,12 @@ switch ($method) {
 	  			$pass = $_POST["password"];
   				$cadena = validarIngreso($conn, $user,$pass);  				
   				echo json_encode($cadena);
+	  			break;
+	  		case '2':
+	  			$userId = $_POST["userid"];
+	  			$latitud = $_POST["latitud"];
+	  			$longitud = $_POST["longitud"];
+	  			insertEmergency($conn,$userId,$latitud,$longitud);
 	  			break;
 	  	}
 	  }

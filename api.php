@@ -43,7 +43,7 @@ function getActividades($conn){
 function insertEmergency($conn,$userId,$latitud,$longitud){
 	$query = "insert into emergencias(idUsuario,fechaHora,latitud,longitud,estado) values ($userId,now(),$latitud,$longitud,'En Proceso');";
 	if (mysqli_query($conn, $query)) {
-			    echo "New record created successfully";
+			    //echo "New record created successfully";
 	} else {
 		echo mysqli_error($conn);
 		array_push($error, "Error: " . $sql . "<br>" . mysqli_error($conn) );
@@ -53,6 +53,43 @@ function insertEmergency($conn,$userId,$latitud,$longitud){
     } else {
     	echo json_encode(array("success"=>1));
     }
+}
+
+function setProcurador($conn,$procuradorId,$emergenciaId){
+	$query = "UPDATE emergencias SET idProcurador=$procuradorId WHERE idEmergencia = $emergenciaId;"
+	if (mysqli_query($conn, $query)) {
+			    //echo "New record created successfully";
+	} else {
+		echo mysqli_error($conn);
+		array_push($error, "Error: " . $sql . "<br>" . mysqli_error($conn) );
+	}	
+	if (count($error) > 0) {
+    	echo json_encode(array("success"=>0));
+    } else {
+    	echo json_encode(array("success"=>1));
+    }
+}
+
+function getEmergencias($conn){
+	$query=mysqli_query($conn,"select idEmergencia, idUsuario, fechaHora, latitud, longitud, estado from emergencias order by fechaHora asc");
+	$emergencias = array();
+	
+	if(mysqli_num_rows($query) > 0){
+		while($row = mysqli_fetch_assoc($query)) {					
+			array_push($emergencias, array(
+				"id" => $row["idEmergencia"],
+				"usuario" => $row["idUsuario"],
+				"fechahora" => $row["fechaHora"],
+				"latitud" => $row["latitud"],
+				"longitud" => $row["longitud"],
+				"estado" => $row["estado"]
+			));
+		}
+		return $emergencias;					
+	}else{
+		//echo 'No hay nada';
+		return $emergencias;
+	}
 }
 
 
@@ -73,6 +110,12 @@ switch ($method) {
 	  			$longitud = $_POST["longitud"];
 	  			insertEmergency($conn,$userId,$latitud,$longitud);
 	  			break;
+	  		case '3':
+	  			$userId = $_POST["userid"];
+	  			$procuradorId = $_POST["procuradorid"];
+	  			$emergenciaId = $_POST["emergenciaid"];
+	  			setProcurador($conn,$procuradorId,$emergenciaId);
+	  			break;
 	  	}
 	  }
     break;
@@ -86,6 +129,10 @@ switch ($method) {
 	  		case '1':	  			
   				$actividades = getActividades($conn);  				
   				echo json_encode($actividades);
+	  			break;
+  			case '2':	  			
+  				$emergencias = getEmergencias($conn);  				
+  				echo json_encode($emergencias);
 	  			break;
 	  	}
 	  }

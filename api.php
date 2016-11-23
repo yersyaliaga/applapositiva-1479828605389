@@ -21,6 +21,21 @@ function validarIngreso($conn, $user,$pass) {
 	}
 }
 
+function setProcurador($conn,$procuradorId,$emergenciaId){
+	$query = "UPDATE emergencias SET idProcurador=$procuradorId WHERE idEmergencia = $emergenciaId"
+	if (mysqli_query($conn, $query)) {
+			    //echo "New record created successfully";
+	} else {
+		echo mysqli_error($conn);
+		array_push($error, "Error: " . $sql . "<br>" . mysqli_error($conn) );
+	}	
+	if (count($error) > 0) {
+    	echo json_encode(array("success"=>0));
+    } else {
+    	echo json_encode(array("success"=>1));
+    }
+}
+
 function getActividades($conn){
 	$query=mysqli_query($conn,"select nomActividad, descripcion, orden from actividades order by orden asc");
 	$actividades = array();

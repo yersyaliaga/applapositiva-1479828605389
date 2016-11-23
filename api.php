@@ -56,7 +56,7 @@ function insertEmergency($conn,$userId,$latitud,$longitud){
 }
 
 function setProcurador($conn,$procuradorId,$emergenciaId){
-	$query = "UPDATE emergencias SET idProcurador=$procuradorId WHERE idEmergencia = $emergenciaId;"
+	$query = "UPDATE emergencias SET idProcurador=$procuradorId WHERE idEmergencia = $emergenciaId"
 	if (mysqli_query($conn, $query)) {
 			    //echo "New record created successfully";
 	} else {
@@ -110,8 +110,7 @@ switch ($method) {
 	  			$longitud = $_POST["longitud"];
 	  			insertEmergency($conn,$userId,$latitud,$longitud);
 	  			break;
-	  		case '3':
-	  			$userId = $_POST["userid"];
+	  		case '3':	  			
 	  			$procuradorId = $_POST["procuradorid"];
 	  			$emergenciaId = $_POST["emergenciaid"];
 	  			setProcurador($conn,$procuradorId,$emergenciaId);

@@ -40,6 +40,28 @@ function getActividades($conn){
 	}
 }
 
+function getEmergencias($conn){
+	$query=mysqli_query($conn,"select idEmergencia, idUsuario, fechaHora, latitud, longitud, estado from emergencias order by fechaHora asc");
+	$emergencias = array();
+	
+	if(mysqli_num_rows($query) > 0){
+		while($row = mysqli_fetch_assoc($query)) {					
+			array_push($emergencias, array(
+				"id" => $row["idEmergencia"],
+				"usuario" => $row["idUsuario"],
+				"fechahora" => $row["fechaHora"],
+				"latitud" => $row["latitud"],
+				"longitud" => $row["longitud"],
+				"estado" => $row["estado"]
+			));
+		}
+		return $emergencias;					
+	}else{
+		//echo 'No hay nada';
+		return $emergencias;
+	}
+}
+
 function insertEmergency($conn,$userId,$latitud,$longitud){
 	$query = "insert into emergencias(idUsuario,fechaHora,latitud,longitud,estado) values ($userId,now(),$latitud,$longitud,'En Proceso');";
 	if (mysqli_query($conn, $query)) {
@@ -87,6 +109,10 @@ switch ($method) {
 	  		case '1':	  			
   				$actividades = getActividades($conn);  				
   				echo json_encode($actividades);
+	  			break;
+	  		case '2':	  			
+  				$emergencias = getEmergencias($conn);  				
+  				echo json_encode($emergencias);
 	  			break;
 	  	}
 	  }

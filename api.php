@@ -21,8 +21,8 @@ function validarIngreso($conn, $user,$pass) {
 	}
 }
 
-function setProcurador($conn,$procuradorId,$emergenciaId){
-	$query = "UPDATE emergencias SET idProcurador=$procuradorId WHERE idEmergencia = $emergenciaId"
+function actualizarProcurador($conn,$procuradorId,$emergenciaId){
+	$query = "UPDATE emergencias SET idProcurador=$procuradorId WHERE idEmergencia = $emergenciaId";
 	if (mysqli_query($conn, $query)) {
 			    //echo "New record created successfully";
 	} else {
@@ -110,7 +110,12 @@ switch ($method) {
 	  			$latitud = $_POST["latitud"];
 	  			$longitud = $_POST["longitud"];
 	  			insertEmergency($conn,$userId,$latitud,$longitud);
-	  			break;	  		
+	  			break;	
+  			case '3':	  			
+	  			$procuradorId = $_POST["procuradorid"];
+	  			$emergenciaId = $_POST["emergenciaid"];
+	  			actualizarProcurador($conn,$procuradorId,$emergenciaId);
+	  			break;
 	  	}
 	  }
     break;

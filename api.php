@@ -21,6 +21,25 @@ function validarIngreso($conn, $user,$pass) {
 	}
 }
 
+function getActividades($conn){
+	$query=mysqli_query($conn,"select nomActividad, descripcion, orden from actividades order by orden asc");
+	$actividades = array();
+	
+	if(mysqli_num_rows($query) > 0){
+		while($row = mysqli_fetch_assoc($query)) {					
+			array_push($actividades, array(
+				"nombre" => $row["nomActividad"],
+				"descripcion" => $row["descripcion"],
+				"orden" => $row["orden"]
+			));
+		}
+		return $actividades;					
+	}else{
+		//echo 'No hay nada';
+		return $actividades;
+	}
+}
+
 
 switch ($method) {
   case 'POST':
@@ -40,7 +59,16 @@ switch ($method) {
   	echo "Method not allowed";
     break;
   case 'GET':
-  	echo "Method not allowed";
+  	if (isset($_GET["procedure"])) {
+	  	$procedure = $_GET["procedure"];	  	
+	  	switch($procedure){
+	  		case '1':	  			
+  				$actividades = getActividades($conn);  				
+  				echo json_encode($actividades);
+	  			break;
+	  	}
+	  }
+  	//echo "Method not allowed";
   	break;
   case 'DELETE':
   	echo "Method not allowed";

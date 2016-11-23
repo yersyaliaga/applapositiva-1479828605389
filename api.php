@@ -41,7 +41,7 @@ function getActividades($conn){
 }
 
 function insertEmergency($conn,$userId,$latitud,$longitud){
-	$query = "insert into emergencias(idUsuario,fechaHora,latitud,longitud,estado) values ($userId,now(),$latitud,$longitud,'En Proceso');";
+	$query = "insert into emergencias(idUsuario,fechaHora,latitud,longitud,estado) values (1,now(),$latitud,$longitud,'En Proceso');";
 	if (mysqli_query($conn, $query)) {
 			    echo "New record created successfully";
 	} else {

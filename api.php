@@ -8,12 +8,12 @@ mysqli_set_charset($conn,"utf8");
 //Funciones para el registro de Push y envío de notificaciones Push
 
 function registerPushNotifications($conn, $user, $device_id) {
-    $query = mysqli_query($conn, "SELECT * FROM usuarios WHERE idDevice='".$device_id ."' and username='".$user ."' ");
+    $query = mysqli_query($conn, "SELECT * FROM registros_push WHERE deviceid='".$device_id ."' and username='".$user ."' ");
 	if (mysqli_num_rows($query) > 0){	
 	    return array("success" => 1);
 	} else {	    
-	    $sql = "UPDATE usuarios SET idDevice='".$device_id."' where username='".$user."';"; 
-	    if (!mysqli_query($conn, $query)) {
+	    $sql = "DELETE FROM registros_push where username='". $user ."'; INSERT into registros_push (deviceid, username) values ('". $device_id . "','". $user . "')"; 
+	    if (!mysqli_multi_query($conn, $sql)) {
 	    	return array("success" => 0, "Falla Multiquery");
 	    }
 	}

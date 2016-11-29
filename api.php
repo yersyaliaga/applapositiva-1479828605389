@@ -144,7 +144,7 @@ function getEmergencias($conn){
 }
 
 function insertEmergency($conn,$userId,$latitud,$longitud){
-	$query = "insert into emergencias(idUsuario,fechaHora,latitud,longitud,estado) values ($userId,now(),$latitud,$longitud,'En Proceso');";
+	$query = "insert into emergencias(idUsuario,fechaHora,latitud,longitud,estado) values ((select idUsuario from usuarios where username='".$userId."'),now(),$latitud,$longitud,'En Proceso');";
 	if (mysqli_query($conn, $query)) {
 			    //echo "New record created successfully";
 	} else {

@@ -132,7 +132,11 @@ function getEmergencias($conn){
 				"fechahora" => $row["fechaHora"],
 				"latitud" => $row["latitud"],
 				"longitud" => $row["longitud"],
-				"estado" => $row["estado"]
+				"estado" => $row["estado"],
+				"nombre" => $row["nombre"],
+				"celular" => $row["celular"],
+				"dni" => $row["dni"],
+				"username" => $row["username"]
 			));
 		}
 		return $emergencias;					

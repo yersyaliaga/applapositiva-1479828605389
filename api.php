@@ -71,13 +71,14 @@ function sendPushNotifications($conn,$username,$nombre, $apiKey, $appsecret, $me
 
 
 function validarIngreso($conn, $user,$pass) {
-	$query = mysqli_query($conn,"Select username from usuarios where username='".$user."' and password='".$pass."'");
+	$query = mysqli_query($conn,"Select username, CONCAT(nombres, ' ' , apellidos) as nombre from usuarios where username='".$user."' and password='".$pass."'");
 	$cadena = array();
 	
 	if(mysqli_num_rows($query) > 0){
 		while($row = mysqli_fetch_assoc($query)) {					
 			array_push($cadena, array(
-				"username" => $row["username"]
+				"username" => $row["username"],
+				"nombre" => $row["nombre"]
 			));
 		}
 		return $cadena;					

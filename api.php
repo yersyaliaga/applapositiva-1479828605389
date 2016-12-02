@@ -38,7 +38,7 @@ function sendPushNotifications($conn,$username,$nombre, $apiKey, $appsecret, $me
     
     if (count($device_ids) > 0) {
 
-		$data_string ='{"message": { "alert": "'. $message .'" }, "target" : {"deviceIds" :' . $device_ids_j . ' } }';
+		$data_string ='{"message": { "alert": "Le informamos que '.$nombre.' '. $message .'" }, "target" : {"deviceIds" :' . $device_ids_j . ' } }';
 			
 		$ch = curl_init('https://mobile.ng.bluemix.net/imfpush/v1/apps/' . $apiKey .'/messages');
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     

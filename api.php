@@ -67,9 +67,6 @@ function sendPushNotifications($conn,$username,$nombre, $apiKey, $appsecret, $me
 //Fin_Parte de funciones push
 
 
-
-
-
 function validarIngreso($conn, $user,$pass) {
 	$query = mysqli_query($conn,"Select username, CONCAT(nombres, ' ' , apellidos) as nombre, tipoUsuario from usuarios where username='".$user."' and password='".$pass."'");
 	$cadena = array();
@@ -124,7 +121,7 @@ function getActividades($conn){
 }
 
 function getEmergencias($conn){
-	$query=mysqli_query($conn,"select idEmergencia, idUsuario, fechaHora, latitud, longitud, estado from emergencias order by fechaHora asc");
+	$query=mysqli_query($conn,"select E.idEmergencia, E.idUsuario, E.fechaHora, E.latitud, E.longitud, E.estado , CONCAT(U.nombres,' ',U.apellidos) as nombre, U.celular, U.dni , U. username from emergencias E left join usuarios U on E.idUsuario = U.idUsuario order by fechaHora asc");
 	$emergencias = array();
 	
 	if(mysqli_num_rows($query) > 0){

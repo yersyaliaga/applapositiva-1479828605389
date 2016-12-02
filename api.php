@@ -20,16 +20,16 @@ function registerPushNotifications($conn, $user, $device_id) {
 	return array("success" => 1);
 }
 
-function sendPushNotifications($conn, $apiKey, $appsecret, $message) {
-	$idsSelect = "select A.propiedad FROM (SELECT distinct lower(propiedad) as propiedad FROM tareas where (estado = 'Nuevo' or estado='En desarrollo') and sprint = (select max(sprint) from tareas)) A left join (SELECT count(*) as cantidad, propiedad FROM tareas where (estado='Nuevo' or estado='En desarrollo') and sprint = (select max(sprint) from tareas) group by propiedad order by count(*) asc) B on A.propiedad = B.propiedad";   
-    $sql = "select * from registros_push WHERE user in ($idsSelect)"; 
+function sendPushNotifications($conn,$username,$nombre, $apiKey, $appsecret, $message) {
+	$idsSelect = "select username from usuarios where idUsuario in (select idAsociado from relacionemergencia where idUsuario=(select idUsuario from usuarios where username=$username))";   
+    $sql = "select * from registros_push WHERE username in ($idsSelect)"; 
 
 	$result = mysqli_query($conn, $sql);
 
 	$device_ids = array();
 	if (mysqli_num_rows($result) > 0) {
 	    while($row = mysqli_fetch_assoc($result)) {
-	    	array_push($device_ids, $row["device_id"]);
+	    	array_push($device_ids, $row["deviceid"]);
 	    }
 	} else {
 	    echo "0 results";
@@ -186,6 +186,14 @@ switch ($method) {
 	  			$device_id = $_POST["deviceid"];
 	  			registerPushNotifications($conn,$user,$device_id);
 	  			break;
+	  		case '5':
+				$apikey = $_POST["apikey"];
+				$appsecret = $_POST["appsecret"];
+				$message = $_POST["message"];
+				$username = $_POST["username"];
+				$nombre = $_POST["nombre"];
+    			sendPushNotifications($conn,$username,$nombre, $apikey, $appsecret, $message);
+    			break;
 	  	}
 	  }
     break;

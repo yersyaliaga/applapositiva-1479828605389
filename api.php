@@ -21,7 +21,7 @@ function registerPushNotifications($conn, $user, $device_id) {
 }
 
 function sendPushNotifications($conn,$username,$nombre, $apiKey, $appsecret, $message) {
-	$idsSelect = "select username from usuarios where idUsuario in (select idAsociado from relacionemergencia where idUsuario=(select idUsuario from usuarios where username=$username))";   
+	$idsSelect = "select username from usuarios where idUsuario in (select idAsociado from relacionemergencia where idUsuario=(select idUsuario from usuarios where username='".$username."'))";   
     $sql = "select * from registros_push WHERE username in ($idsSelect)"; 
 
 	$result = mysqli_query($conn, $sql);

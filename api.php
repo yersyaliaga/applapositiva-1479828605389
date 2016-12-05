@@ -183,7 +183,7 @@ function insertEmergency($conn,$userId,$latitud,$longitud){
 }
 
 function insertServicio($conn,$userId,$servicioId){
-	$query = "insert into usoservicios(idUsuario,idServicio) values ((select idUsuario from usuarios where username='".$userId."'),$servicioId);";
+	$query = "insert into usoservicios(idUsuario,idServicio) values ((select idUsuario from usuarios where username='".$userId."'), $servicioId);";
 	if (mysqli_query($conn, $query)) {
 			    //echo "New record created successfully";
 	} else {
@@ -236,7 +236,7 @@ switch ($method) {
     		case '6':
     			$userId = $_POST["userid"];
 	  			$servicioId = $_POST["servicioid"];	  			
-	  			insertEmergency($conn,$userId,$servicioId);
+	  			insertServicio($conn,$userId,$servicioId);
     			break;
 	  	}
 	  }

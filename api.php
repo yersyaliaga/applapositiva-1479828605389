@@ -168,7 +168,7 @@ function getEmergencias($conn){
 }
 
 function getServiciosUsados($conn){
-	$query=mysqli_query($conn,"SELECT S.nombreServicio, U.idUsuario, N.username, concat(N.nombres,' ',N.apellidos) as nombre, N.dni, N.celular FROM usoservicios U left join servicios S on U.idServicio = S.idServicio left join usuarios N on N.idUsuario = U.idUsuario");
+	$query=mysqli_query($conn,"SELECT S.nombreServicio, U.fechaHora, U.idUsuario, N.username, concat(N.nombres,' ',N.apellidos) as nombre, N.dni, N.celular FROM usoservicios U left join servicios S on U.idServicio = S.idServicio left join usuarios N on N.idUsuario = U.idUsuario");
 	$servicios = array();
 	
 	if(mysqli_num_rows($query) > 0){
@@ -180,7 +180,8 @@ function getServiciosUsados($conn){
 				"username" => $row["username"],
 				"nombre" => $row["nombre"],
 				"dni" => $row["dni"],
-				"celular" => $row["celular"]
+				"celular" => $row["celular"],
+				"fechahora" => $row["fechaHora"]
 			));
 		}
 		return $servicios;					

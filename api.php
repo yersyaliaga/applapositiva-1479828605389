@@ -183,7 +183,7 @@ function insertEmergency($conn,$userId,$latitud,$longitud){
 }
 
 function insertServicio($conn,$userId,$servicioId){
-	$query = "insert into usoservicios(idUsuario,idServicio) values ((select idUsuario from usuarios where username='".$userId."'), $servicioId);";
+	$query = "insert into usoservicios(idUsuario,idServicio,fechaHora) values ((select idUsuario from usuarios where username='".$userId."'), $servicioId, now());";
 	if (mysqli_query($conn, $query)) {
 			    //echo "New record created successfully";
 	} else {

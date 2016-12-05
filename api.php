@@ -101,6 +101,26 @@ function actualizarProcurador($conn,$procuradorId,$emergenciaId){
     }
 }
 
+function getProcuradores($conn){
+	$query=mysqli_query($conn,"select idUsuario,CONCAT(nombres,' ',apellidos) as nombre, celular, dni from usuarios where tipoUsuario='procurador'");
+	$procuradores = array();
+	
+	if(mysqli_num_rows($query) > 0){
+		while($row = mysqli_fetch_assoc($query)) {					
+			array_push($procuradores, array(
+				"id" => $row["idUsuario"],
+				"nombre" => $row["nombre"],
+				"celular" => $row["celular"],
+				"dni" => $row["dni"]
+			));
+		}
+		return $procuradores;					
+	}else{
+		//echo 'No hay nada';
+		return $procuradores;
+	}
+}
+
 function getActividades($conn){
 	$query=mysqli_query($conn,"select nomActividad, descripcion, orden from actividades order by orden asc");
 	$actividades = array();
@@ -287,6 +307,10 @@ switch ($method) {
 	  		case '4':	  			
   				$usados = getServiciosUsados($conn);  				
   				echo json_encode($usados);
+	  			break;
+	  		case '5':	  			
+  				$procuradores = getProcuradores($conn);  				
+  				echo json_encode($procuradores);
 	  			break;
 	  	}
 	  }

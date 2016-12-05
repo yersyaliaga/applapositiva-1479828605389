@@ -182,6 +182,21 @@ function insertEmergency($conn,$userId,$latitud,$longitud){
     }
 }
 
+function insertServicio($conn,$userId,$servicioId){
+	$query = "insert into usoservicios(idUsuario,idServicio) values ((select idUsuario from usuarios where username='".$userId."'),$servicioId);";
+	if (mysqli_query($conn, $query)) {
+			    //echo "New record created successfully";
+	} else {
+		echo mysqli_error($conn);
+		array_push($error, "Error: " . $sql . "<br>" . mysqli_error($conn) );
+	}	
+	if (count($error) > 0) {
+    	echo json_encode(array("success"=>0));
+    } else {
+    	echo json_encode(array("success"=>1));
+    }
+}
+
 
 switch ($method) {
   case 'POST':
@@ -217,6 +232,11 @@ switch ($method) {
 				$username = $_POST["username"];
 				$nombre = $_POST["nombre"];
     			sendPushNotifications($conn,$username,$nombre, $apikey, $appsecret, $message);
+    			break;
+    		case '6':
+    			$userId = $_POST["userid"];
+	  			$servicioId = $_POST["servicioid"];	  			
+	  			insertEmergency($conn,$userId,$servicioId);
     			break;
 	  	}
 	  }

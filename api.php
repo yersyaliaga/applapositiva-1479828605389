@@ -167,6 +167,29 @@ function getEmergencias($conn){
 	}
 }
 
+function getServiciosUsados($conn){
+	$query=mysqli_query($conn,"SELECT S.nombreServicio, U.idUsuario, N.username, concat(N.nombres,' ',N.apellidos) as nombre, N.dni, N.celular FROM usoservicios U left join servicios S on U.idServicio = S.idServicio left join usuarios N on N.idUsuario = U.idUsuario");
+	$servicios = array();
+	
+	if(mysqli_num_rows($query) > 0){
+		while($row = mysqli_fetch_assoc($query)) {					
+			array_push($servicios, array(
+				
+				"servicio" => $row["nombreServicio"],
+				"idusuario" => $row["idUsuario"],
+				"username" => $row["username"],
+				"nombre" => $row["nombre"],
+				"dni" => $row["dni"],
+				"celular" => $row["celular"]
+			));
+		}
+		return $servicios;					
+	}else{
+		//echo 'No hay nada';
+		return $servicios;
+	}
+}
+
 function insertEmergency($conn,$userId,$latitud,$longitud){
 	$query = "insert into emergencias(idUsuario,fechaHora,latitud,longitud,estado) values ((select idUsuario from usuarios where username='".$userId."'),now(),$latitud,$longitud,'En Proceso');";
 	if (mysqli_query($conn, $query)) {
@@ -259,6 +282,10 @@ switch ($method) {
   			case '3':	  			
   				$servicios = getServicios($conn);  				
   				echo json_encode($servicios);
+	  			break;
+	  		case '4':	  			
+  				$usados = getServiciosUsados($conn);  				
+  				echo json_encode($usados);
 	  			break;
 	  	}
 	  }

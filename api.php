@@ -120,6 +120,27 @@ function getActividades($conn){
 	}
 }
 
+function getServicios($conn){
+	$query=mysqli_query($conn,"select idServicio, nombreServicio, desServicio, cantidadGratis, precioServicio from servicios");
+	$servicios = array();
+	
+	if(mysqli_num_rows($query) > 0){
+		while($row = mysqli_fetch_assoc($query)) {					
+			array_push($servicios, array(
+				"id" => $row["idServicio"],
+				"nombre" => $row["nombreServicio"],
+				"descripcion" => $row["desServicio"],
+				"cantidad" => $row["cantidadGratis"],
+				"precio" => $row["precioServicio"]
+			));
+		}
+		return $servicios;					
+	}else{
+		//echo 'No hay nada';
+		return $servicios;
+	}
+}
+
 function getEmergencias($conn){
 	$query=mysqli_query($conn,"select E.idEmergencia, E.idUsuario, E.fechaHora, E.latitud, E.longitud, E.estado , CONCAT(U.nombres,' ',U.apellidos) as nombre, U.celular, U.dni , U. username from emergencias E left join usuarios U on E.idUsuario = U.idUsuario order by fechaHora asc");
 	$emergencias = array();

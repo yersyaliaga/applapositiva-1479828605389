@@ -236,6 +236,10 @@ switch ($method) {
   				$emergencias = getEmergencias($conn);  				
   				echo json_encode($emergencias);
 	  			break;
+  			case '3':	  			
+  				$servicios = getServicios($conn);  				
+  				echo json_encode($servicios);
+	  			break;
 	  	}
 	  }
   	//echo "Method not allowed";

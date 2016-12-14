@@ -162,7 +162,7 @@ function getServicios($conn){
 }
 
 function getEmergencias($conn){
-	$query=mysqli_query($conn,"select E.idEmergencia, E.idUsuario, E.fechaHora, E.latitud, E.longitud, E.estado , CONCAT(U.nombres,' ',U.apellidos) as nombre, U.celular, U.dni , U. username from emergencias E left join usuarios U on E.idUsuario = U.idUsuario order by fechaHora asc");
+	$query=mysqli_query($conn,"select E.idEmergencia,E.idProcurador, E.idUsuario, E.fechaHora, E.latitud, E.longitud, E.estado , CONCAT(U.nombres,' ',U.apellidos) as nombre, U.celular, U.dni , U. username from emergencias E left join usuarios U on E.idUsuario = U.idUsuario order by fechaHora asc");
 	$emergencias = array();
 	
 	if(mysqli_num_rows($query) > 0){
@@ -177,7 +177,8 @@ function getEmergencias($conn){
 				"nombre" => $row["nombre"],
 				"celular" => $row["celular"],
 				"dni" => $row["dni"],
-				"username" => $row["username"]
+				"username" => $row["username"],
+				"procurador" => $row["idProcurador"]
 			));
 		}
 		return $emergencias;					
